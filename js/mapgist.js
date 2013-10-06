@@ -1,8 +1,6 @@
 var map;
 
 require(["esri/map", "dojo/domReady!"], function(Map) {
-	esri.config.defaults.io.corsEnabledServers.push("api.github.com");
-	esri.config.defaults.io.corsEnabledServers.push("gist.github.com");
 	var self = this;
 	map = new Map("map", {
 	basemap: "topo",
@@ -23,8 +21,8 @@ require(["esri/map", "dojo/domReady!"], function(Map) {
 		var defaultGistId = "6851442";
 		var gistId = "";
 		var query = getQueryParams(document.location.search);
-		if(typeof query.mapgist != 'undefined'){
-			gistId = query.mapgist;
+		if(typeof query.gist != 'undefined'){
+			gistId = query.gist;
 		} else {
 			gistId = defaultGistId;
 		}
@@ -33,10 +31,10 @@ require(["esri/map", "dojo/domReady!"], function(Map) {
 
 	function getGistContent(rawUrl){
 		console.log(rawUrl);
+		var url = "proxy.php?" + rawUrl;
 		var xhrArgs = {
-	    	url: rawUrl,
-	    	handleAs: "json",
-	    	preventCache: true
+	    	url: url,
+	    	handleAs: "json"
 	  	};
 
 	  	var deferred = dojo.xhrGet(xhrArgs);
@@ -44,6 +42,9 @@ require(["esri/map", "dojo/domReady!"], function(Map) {
 	  	deferred.then(
 	      function(data){
 	      		console.log(data);
+	      		map.setBasemap(data.basemap);
+	      		map.centerAt(data.center);
+	      		map.setZoom(data.zoom);
 	      		//self.map = data;       
 	      },
 	      function(error){
