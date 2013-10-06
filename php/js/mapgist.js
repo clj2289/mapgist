@@ -2,11 +2,11 @@ var map;
 
 require(["esri/map", "dojo/domReady!"], function(Map) {
 	var self = this;
-	map = new Map("map");
+	
 
 	init();
-});
 
+});
 function init(){
 	var mapgistId = getMapGistIdFromUrl();
 	var gistRawUrl = getGistRawUrl(mapgistId);
@@ -37,11 +37,11 @@ function getGistContent(rawUrl){
 
   	deferred.then(
       function(data){
-      		console.log(data);
-      		map.setBasemap(data.basemap);
-      		map.centerAt(data.center);
-      		map.setZoom(data.zoom);
-      		//self.map = data;       
+        require(["esri/map"], function(Map) {
+
+      		map = new Map("map", data);
+        });  
+
       },
       function(error){
           alert("found gist, but no usable map data");
@@ -143,6 +143,7 @@ function getQueryParams(qs) {
 
     return params;
 }
+
 
 
 
