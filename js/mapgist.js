@@ -73,13 +73,15 @@ function saveMap(){
       postData: postData,
       handleAs: "json",
       load: function(data){
-      	var newUrl = window.location.origin + window.location.pathname + "?gist=" + data.id;
+      	      	var newUrl = window.location.origin + window.location.pathname + "?gist=" + data.id;
         dojo.byId("mapLink").innerHTML = "map has been saved to " + newUrl;
         dojo.connect(dojo.byId("mapLink"), 'onclick', function(){window.open(newUrl)});
+
+        var gistUrl = data.html_url;
+        dojo.byId("gistLink").innerHTML = "gist url:" + gistUrl;
+        dojo.connect(dojo.byId("gistLink"), 'onclick', function(){window.open(gistUrl)});
       },
       error: function(error){
-        // We'll 404 in the demo, but that's okay.  We don't have a 'postIt' service on the
-        // docs server.
         dojo.byId("mapLink").innerHTML = "failed to create gist :-(";
       }
     };
